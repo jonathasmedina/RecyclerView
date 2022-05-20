@@ -2,6 +2,7 @@ package com.example.recyclerview;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,8 +49,34 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
 
+        //***
+        //início exemplo de swipe para excluir um item
+            ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+                @Override
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                    //Remove swiped item from list and notify the RecyclerView
+                    int position = viewHolder.getAdapterPosition();
+                    usuarioArrayList_.remove(position);
+                    recyclerAdapter.notifyDataSetChanged();
+
+                }
+            };
+
+            ItemTouchHelper touchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+            touchHelper.attachToRecyclerView(recyclerView);
+        //final código swipe para excluir um item
+        //***
+
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerAdapter);
 
     }
+
+
 }

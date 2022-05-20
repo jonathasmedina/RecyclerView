@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -37,8 +38,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
          mImageView = itemView.findViewById(R.id.imageView);
 
          itemView.setOnClickListener(this);
-
-
       }
 
       @Override
@@ -80,4 +79,5 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
       //tamanho da lista de itens
       return usuarioArrayList.size();
    }
+
 }
