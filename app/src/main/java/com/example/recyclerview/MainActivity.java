@@ -1,14 +1,21 @@
 package com.example.recyclerview;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,27 +56,36 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
 
+//        Recycler View com grid ao invés de lista:
+//        ***
+//        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
+//        ***
+
         //***
         //início exemplo de swipe para excluir um item
-            ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
+                0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.UP | ItemTouchHelper.DOWN) {
 
-                @Override
-                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                    return false;
-                }
+            @Override
+            public boolean onMove(RecyclerView recyclerView,
+                                  RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
+                return false;
+            }
 
-                @Override
-                public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                    //Remove swiped item from list and notify the RecyclerView
-                    int position = viewHolder.getAdapterPosition();
-                    usuarioArrayList_.remove(position);
-                    recyclerAdapter.notifyDataSetChanged();
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                //remove o item da lista e atualiza o RecyclerView
+                int position = viewHolder.getAdapterPosition();
+                usuarioArrayList_.remove(position);
+                recyclerAdapter.notifyDataSetChanged();
 
-                }
-            };
+            }
+        };
 
-            ItemTouchHelper touchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-            touchHelper.attachToRecyclerView(recyclerView);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        touchHelper.attachToRecyclerView(recyclerView);
         //final código swipe para excluir um item
         //***
 
