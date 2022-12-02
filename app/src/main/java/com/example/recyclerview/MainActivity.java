@@ -2,19 +2,27 @@ package com.example.recyclerview;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -65,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         //início exemplo de swipe para excluir um item
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
                 0,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.UP | ItemTouchHelper.DOWN) {
+                ItemTouchHelper.LEFT) {
 
             @Override
             public boolean onMove(RecyclerView recyclerView,
@@ -82,6 +90,64 @@ public class MainActivity extends AppCompatActivity {
                 recyclerAdapter.notifyDataSetChanged();
 
             }
+
+            @Override
+            public float getSwipeThreshold(@NonNull RecyclerView.ViewHolder viewHolder) {
+                return 1f;
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                setDeleteIcon(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+
+            private void setDeleteIcon(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                Paint mClearPaint = new Paint();
+                mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+
+                ColorDrawable mBackground = new ColorDrawable();
+
+                int backgroundColor = Color.parseColor("#FFFFFF");
+                Drawable deleteDrawable = ContextCompat.getDrawable(getApplicationContext(),
+                        R.drawable.ic_delete);
+
+                int intrinsicWidth = deleteDrawable.getIntrinsicWidth();
+                int intrinsicHeight = deleteDrawable.getIntrinsicHeight();
+
+                View itemView = viewHolder.itemView;
+                int itemHeight = itemView.getHeight();
+
+                boolean isCancelled = dX == 0 && !isCurrentlyActive;
+
+                if(isCancelled){
+                    c.drawRect(itemView.getRight()+dX,
+                            (float) itemView.getTop(),
+                            (float) itemView.getRight(),
+                            (float) itemView.getBottom(),
+                            mClearPaint);
+                    return;
+                }
+
+                mBackground.setColor(backgroundColor);
+
+                mBackground.setBounds(itemView.getRight() + (int) dX,
+                        itemView.getTop()-1,
+                        itemView.getRight()-1,
+                        itemView.getBottom()-1);
+                mBackground.draw(c);
+
+                int deleteIconTop = itemView.getTop() + (itemHeight - intrinsicHeight) / 2;
+                int deleteIconMargin = (itemHeight-intrinsicHeight)/2;
+                int deleteIconLeft = itemView.getRight() - deleteIconMargin - intrinsicWidth;
+                int deleteIconRight = itemView.getRight() - deleteIconMargin;
+                int deleteItonBottom = deleteIconTop + intrinsicHeight;
+
+                deleteDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteItonBottom);
+                deleteDrawable.draw(c);
+
+            }
+
         };
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(simpleItemTouchCallback);
@@ -89,10 +155,14 @@ public class MainActivity extends AppCompatActivity {
         //final código swipe para excluir um item
         //***
 
+
+        //editado para swipe
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerAdapter);
 
     }
-
 
 }

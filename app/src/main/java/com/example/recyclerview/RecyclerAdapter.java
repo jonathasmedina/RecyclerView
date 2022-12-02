@@ -58,6 +58,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
    public RecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
       //método para inflar o xml dos itens
       View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_items, parent,false);
+
       return new MyViewHolder(itemView);
    }
 
