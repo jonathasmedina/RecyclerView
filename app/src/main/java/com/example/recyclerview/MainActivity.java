@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
                 ColorDrawable mBackground = new ColorDrawable();
 
-                int backgroundColor = Color.parseColor("#FFFFFF");
+                int backgroundColor = Color.parseColor("#00FFFF");
                 Drawable deleteDrawable = ContextCompat.getDrawable(getApplicationContext(),
                         R.drawable.ic_delete);
 
@@ -132,9 +132,9 @@ public class MainActivity extends AppCompatActivity {
                 mBackground.setColor(backgroundColor);
 
                 mBackground.setBounds(itemView.getRight() + (int) dX,
-                        itemView.getTop()-1,
-                        itemView.getRight()-1,
-                        itemView.getBottom()-1);
+                        itemView.getTop()+70, //valores opcionais, posições do background em relação ao item
+                        itemView.getRight(),
+                        itemView.getBottom()-50);
                 mBackground.draw(c);
 
                 int deleteIconTop = itemView.getTop() + (itemHeight - intrinsicHeight) / 2;
