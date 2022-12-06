@@ -89,6 +89,16 @@ public class MainActivity extends AppCompatActivity {
                 usuarioArrayList_.remove(position);
                 recyclerAdapter.notifyDataSetChanged();
 
+                /*
+                Como remover do banco de dados com swipe
+                 */
+
+                //receber objeto clicado: todo fazer isso antes de remover na linha 89
+                //Usuario usuario = recyclerAdapter.usuarioArrayList.get(position);
+
+                // deletar objeto do banco:
+                //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                //databaseReference.child("Usuario").child(usuario.getId()).setValue(null); //todo testar com removeValue
             }
 
             @Override
