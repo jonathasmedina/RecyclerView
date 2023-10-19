@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setAdapter() {
+
         RecyclerAdapter recyclerAdapter = new RecyclerAdapter(usuarioArrayList_);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -170,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
+        //aqui
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerAdapter);
 
