@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -41,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
         setUserInfo();
 
         setAdapter();
+
+        //efeito visual de snap - exibe parte do elemento que está além do limite da tela
+        SnapHelper snapHelper = new LinearSnapHelper(); // ou PagerSnapHelper(); para simular ViewPager - elemento tela toda
+        snapHelper.attachToRecyclerView(recyclerView);
     }
 
 
@@ -64,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
         RecyclerAdapter recyclerAdapter = new RecyclerAdapter(usuarioArrayList_);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+
+        //para uma lista na horizontal:
+       // RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
 
 //        Recycler View com grid ao invés de lista:
 //        ***
